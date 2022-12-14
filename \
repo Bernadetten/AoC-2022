@@ -1,0 +1,106 @@
+import pprint
+
+with open("input_day_14.txt", "r") as filer:
+    content = filer.read().split('\n')
+
+data_input = ["498,4 -> 498,6 -> 496,6", "503,4 -> 502,4 -> 502,9 -> 494,9"]
+#data_input = content
+data = data_input
+
+sand_is_falling = True 
+start_position = (0, 500)
+lowest_rock = 0 
+highest_y_coordinate = 0
+highest_x_coordinate = 0
+
+# Content needs to be parsed to pairs
+pairs = []
+for line in data:
+    coordinates = line.split('->')
+    temp_pairs = []
+    for i,x in enumerate(coordinates):
+        if i > 0:
+            first = coordinates[i-1].split(',')
+            first_x = int(first[0])
+            first_y = int(first[1])
+            second = coordinates[i].split(',')
+            second_x = int(second[0])
+            second_y = int(second[1])
+            temp_pairs += [((first_x,first_y), (second_x, second_y))]
+            if first_x > highest_x_coordinate:
+                highest_x_coordinate = first_x
+            if first_y > highest_y_coordinate:
+                highest_y_coordinate = first_y
+            if second_x > highest_x_coordinate:
+                highest_x_coordinate = second_x
+            if second_y > highest_x_coordinate:
+                highest_y_coordinate = second_y
+    pairs += [temp_pairs]
+
+data = [["." for _ in range(highest_x_coordinate)] for _ in range(highest_y_coordinate)]
+
+# Pairs need to be looped over and those in between them set to #
+for pair_list in pairs:
+    for pair in pair_list:
+        direction = (0,0)
+        if pair[0][0] > pair[1][0]: 
+            direction = (-1, 0)
+        elif pair[0][1] > pair[1][1]:
+            direction = (0, -1)
+        elif pair[0][0] < pair[1][0]:
+            direction = (1, 0)
+        elif pair[0][1] < pair[1][1]:
+            direction = (0, 1)
+
+        pointer = pair[0]
+        while pointer != pair[1]:
+            print(pointer)
+            print(highest_x_coordinate)
+            print(highest_y_coordinate)
+            data[pointer[1]][pointer[0]] = '#'
+            pointer = (pointer[0] + direction[0], pointer[1] + direction[1])
+
+        data[pair[1][1]][pair[1][0]] = '#'
+
+print(data)
+
+#Go from the firs tin the pair to the second, case distinguishion    
+
+
+
+for i, line in enumerate(data):
+    if "#" in line:
+        lowest_rock = i
+    data[i] = [*line]
+
+def calc_final(y,x,data):
+    data_not_rest = True
+    while data_not_rest:
+        if data[y+1][x] == '.':
+            y = y + 1
+        elif data[y+1][x-1]=='.':
+            y = y + 1
+            x = x - 1
+        elif data[y+1][x+1]=='.':
+            y = y + 1
+            x = x + 1
+        else: 
+            return y, x, False
+        if y+1 > lowest_rock:
+            return y, x, True
+count = 0
+
+while sand_is_falling:
+     # calculate the position of sand 
+     y,x,moved = calc_final(start_position[0], start_position[1], data)
+     print(y,x,moved)
+     # check whether we are done, if it comes back moving we are done, else we need to continue.
+     sand_is_falling = not moved 
+
+     # update data set
+     data[y][x] = 'o' 
+     count +=1
+
+print(count)
+
+
