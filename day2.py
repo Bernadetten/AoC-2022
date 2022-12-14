@@ -35,6 +35,7 @@ for line in data:
         score += outcomes[line]
 
 print(score)
+
 score = 0
 
 ## Column 2
