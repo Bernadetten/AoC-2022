@@ -10,7 +10,7 @@ else:
     file_path = "input_day_8.txt"
 
 with open(file_path, "r") as f:
-    data = f.read().split('\n')
+    data = f.read().split("\n")
 
 matrix = []
 visible = []
@@ -32,11 +32,11 @@ for line in data:
 # All trees on the edge are visible:
 for i, line in enumerate(visible):
     for j, elem in enumerate(line):
-        if i == 0 or (i == len(visible)-1) or j==0 or j==len(line)-1:
+        if i == 0 or (i == len(visible) - 1) or j == 0 or j == len(line) - 1:
             visible[i][j] = 1
 
 # From the top
-for i in range(len(matrix[0])): 
+for i in range(len(matrix[0])):
     to_the_top = 0
     for j in range(len(matrix)):
         if to_the_top < matrix[j][i]:
@@ -44,23 +44,23 @@ for i in range(len(matrix[0])):
             to_the_top = matrix[j][i]
 
 # From the bottom
-for i in range(len(matrix[0])): 
+for i in range(len(matrix[0])):
     to_the_bottom = 0
     for j in range(len(matrix)):
-        if to_the_bottom < matrix[len(matrix[0])-1-j][i]:
-            visible[len(matrix[0])-1-j][i] = 1
-            to_the_bottom = matrix[len(matrix[0])-1-j][i]
+        if to_the_bottom < matrix[len(matrix[0]) - 1 - j][i]:
+            visible[len(matrix[0]) - 1 - j][i] = 1
+            to_the_bottom = matrix[len(matrix[0]) - 1 - j][i]
 
 # From the right
-for i, row in enumerate(matrix): 
+for i, row in enumerate(matrix):
     to_the_right = 0
     for j, elem in enumerate(reversed(row)):
         if to_the_right < elem:
-            visible[i][len(row)-1-j] = 1
+            visible[i][len(row) - 1 - j] = 1
             to_the_right = elem
 
 # From the left
-for i, row in enumerate(matrix): 
+for i, row in enumerate(matrix):
     to_the_left = 0
     for j, elem in enumerate(row):
         if to_the_left < elem:
@@ -76,15 +76,16 @@ for row in visible:
 # Print result
 print(count)
 
-def calc_scenic(i,j,matrix):
+
+def calc_scenic(i, j, matrix):
     count = 0
     result = 1
     # Down
-    if i != len(matrix[0])-1:
-        high = matrix[i+1][j]
+    if i != len(matrix[0]) - 1:
+        high = matrix[i + 1][j]
         count = count + 1
-        if high < matrix[i][j]: 
-            for k in range(i+2, len(matrix[0])):
+        if high < matrix[i][j]:
+            for k in range(i + 2, len(matrix[0])):
                 count = count + 1
                 high = matrix[k][j]
                 if matrix[k][j] >= matrix[i][j]:
@@ -95,10 +96,10 @@ def calc_scenic(i,j,matrix):
     count = 0
     # Up
     if i != 0:
-        high = matrix[i-1][j]
+        high = matrix[i - 1][j]
         count = count + 1
         if high < matrix[i][j]:
-            for k in reversed(range(0, i-1)):
+            for k in reversed(range(0, i - 1)):
                 count = count + 1
                 high = matrix[k][j]
                 if matrix[k][j] >= matrix[i][j]:
@@ -108,10 +109,10 @@ def calc_scenic(i,j,matrix):
     count = 0
     # Left
     if j != 0:
-        high = matrix[i][j-1]
+        high = matrix[i][j - 1]
         count = count + 1
         if high < matrix[i][j]:
-            for k in reversed(range(0, j-1)):
+            for k in reversed(range(0, j - 1)):
                 count = count + 1
                 high = matrix[i][k]
                 if matrix[i][k] >= matrix[i][j]:
@@ -120,11 +121,11 @@ def calc_scenic(i,j,matrix):
 
     count = 0
     # Right
-    if j != len(matrix)-1:
-        high = matrix[i][j+1]
+    if j != len(matrix) - 1:
+        high = matrix[i][j + 1]
         count = count + 1
         if high < matrix[i][j]:
-            for k in range(j+2, len(matrix)):
+            for k in range(j + 2, len(matrix)):
                 count = count + 1
                 high = matrix[i][k]
                 if matrix[i][k] >= matrix[i][j]:
@@ -132,13 +133,14 @@ def calc_scenic(i,j,matrix):
 
     result = result * count
     return result
-# 
+
+
+#
 max_scenic = 0
 for i, line in enumerate(matrix):
     for j, elem in enumerate(line):
-        scenic[i][j] = calc_scenic(i,j,matrix)
+        scenic[i][j] = calc_scenic(i, j, matrix)
         if scenic[i][j] > max_scenic:
             max_scenic = scenic[i][j]
 
 print(max_scenic)
-

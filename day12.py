@@ -14,10 +14,10 @@ else:
     file_path = "input_day_12.txt"
 
 with open(file_path, "r") as f:
-    data = f.read().split('\n')
+    data = f.read().split("\n")
 
-start1 = (0,0)
-final = (0,0)
+start1 = (0, 0)
+final = (0, 0)
 visited = set([])
 parent = {}
 
@@ -26,44 +26,49 @@ for i, line in enumerate(data):
         row = []
         for j, char in enumerate(line):
             match char:
-                case 'S':
+                case "S":
                     row += [1]
-                    start1 = (i,j)
-                case 'E':
+                    start1 = (i, j)
+                case "E":
                     row += [26]
-                    final = (i,j)
+                    final = (i, j)
                 case _:
-                    row += [ord(char)-96]
+                    row += [ord(char) - 96]
         grid += [row]
+
 
 def left(location, grid):
     if location[0] >= 1:
-        if grid[location[0]-1][location[1]] - grid[location[0]][location[1]] <= 1:
-            return True, (location[0]-1, location[1])
-    return False, location 
+        if grid[location[0] - 1][location[1]] - grid[location[0]][location[1]] <= 1:
+            return True, (location[0] - 1, location[1])
+    return False, location
+
 
 def right(location, grid):
     if location[0] <= len(grid) - 2:
-        if grid[location[0]+1][location[1]] - grid[location[0]][location[1]] <= 1:
-            return True, (location[0]+1, location[1])
-    return False, location 
+        if grid[location[0] + 1][location[1]] - grid[location[0]][location[1]] <= 1:
+            return True, (location[0] + 1, location[1])
+    return False, location
+
 
 def up(location, grid):
     if location[1] >= 1:
-        if grid[location[0]][location[1]-1] - grid[location[0]][location[1]] <= 1:
-            return True, (location[0], location[1]-1)
-    return False, location 
+        if grid[location[0]][location[1] - 1] - grid[location[0]][location[1]] <= 1:
+            return True, (location[0], location[1] - 1)
+    return False, location
+
 
 def down(location, grid):
     if location[1] <= len(grid[0]) - 2:
-        if grid[location[0]][location[1]+1] - grid[location[0]][location[1]] <= 1:
-            return True, (location[0], location[1]+1)
-    return False, location 
+        if grid[location[0]][location[1] + 1] - grid[location[0]][location[1]] <= 1:
+            return True, (location[0], location[1] + 1)
+    return False, location
+
 
 if part1:
     list_of_start = [start1]
 else:
-    list_of_start = [(x,0) for x in range(len(grid))] # Not future proof
+    list_of_start = [(x, 0) for x in range(len(grid))]  # Not future proof
 list_of_lengths = []
 
 for start in list_of_start:
@@ -75,18 +80,18 @@ for start in list_of_start:
     while not q.empty():
         move = q.get()
 
-        if move not in visited: 
+        if move not in visited:
             r = right(move, grid)
             if r[0]:
                 if r[1] not in visited:
                     q.put(r[1])
-                    parent[r[1]] = move 
-    
-            d = down(move, grid )
+                    parent[r[1]] = move
+
+            d = down(move, grid)
             if d[0]:
                 if d[1] not in visited:
                     q.put(d[1])
-                    parent[d[1]] = move        
+                    parent[d[1]] = move
 
             l = left(move, grid)
             if l[0]:
@@ -98,8 +103,8 @@ for start in list_of_start:
             if u[0]:
                 if u[1] not in visited:
                     q.put(u[1])
-                    parent[u[1]] = move 
-    
+                    parent[u[1]] = move
+
             visited.add(move)
 
     temp = parent[final]

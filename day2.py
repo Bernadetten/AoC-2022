@@ -13,22 +13,22 @@
 
 # Would map the following to a dictonary matrix if it were a bigger solution space than 9
 outcomes = {
-    'A X': 4,
-    'A Y': 8,
-    'A Z': 3,
-    'B X': 1,
-    'B Y': 5, 
-    'B Z': 9,
-    'C X': 7,
-    'C Y': 2,
-    'C Z': 6
+    "A X": 4,
+    "A Y": 8,
+    "A Z": 3,
+    "B X": 1,
+    "B Y": 5,
+    "B Z": 9,
+    "C X": 7,
+    "C Y": 2,
+    "C Z": 6,
 }
 
 data = []
 score = 0
 
 with open("input_day_2.txt", "r") as f:
-    data = f.read().split('\n')
+    data = f.read().split("\n")
 
 for line in data:
     if line != "":
@@ -42,34 +42,22 @@ score = 0
 # Y - Need draw
 # Z - Need to win
 
-needToLose = {
-    'A': 'Z',
-    'B': 'X',
-    'C': 'Y'
-}
+needToLose = {"A": "Z", "B": "X", "C": "Y"}
 
-needToDraw = {
-    'A': 'X',
-    'B': 'Y',
-    'C': 'Z'
-}
+needToDraw = {"A": "X", "B": "Y", "C": "Z"}
 
-needToWin = {
-    'A': 'Y',
-    'B': 'Z',
-    'C': 'X'
-}
+needToWin = {"A": "Y", "B": "Z", "C": "X"}
 
 for line in data:
     if line != "":
-        line_data = line.split(' ')
-        situation = line_data[0] + ' '
+        line_data = line.split(" ")
+        situation = line_data[0] + " "
         match line_data[1]:
-            case 'X':
+            case "X":
                 situation += needToLose[line_data[0]]
-            case 'Y':
+            case "Y":
                 situation += needToDraw[line_data[0]]
-            case 'Z':
+            case "Z":
                 situation += needToWin[line_data[0]]
         score += outcomes[situation]
 
