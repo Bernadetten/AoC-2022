@@ -1,3 +1,4 @@
+# Thanks to github.com/pizzapim
 import sys
 import re
 from itertools import pairwise
