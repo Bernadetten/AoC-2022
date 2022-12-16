@@ -24,6 +24,7 @@ with open(file_path, "r") as f:
 def md(x1, y1, x2, y2):
     return abs(x1 - x2) + abs(y1 - y2)
 
+
 # Processing the data.
 for line in data:
     if line != "":
@@ -50,15 +51,16 @@ def mergeranges(ranges):
 
     for (xl, xh) in ranges:
         #    print('super', super_range)
-        #print('comparing to', xl, ' ', xh)
+        # print('comparing to', xl, ' ', xh)
 
-        if not (xl - 1 <= super_range[1] and xl >= super_range[0]): 
+        if not (xl - 1 <= super_range[1] and xl >= super_range[0]):
             return xl - 1
-            
+
         if xh > super_range[1]:
             super_range = (super_range[0], xh)
 
     return None
+
 
 # Now we calculate the impossible ranges
 for y in given_y:
@@ -66,7 +68,7 @@ for y in given_y:
         beacon_on_y = [b[0] for _, b, _ in prodata if b[1] == y]
 
     absent_points = []
-    #print(y)
+    # print(y)
     # We need to add the ranges of points that are not available.
     for source, beacon, dis in prodata:
         height_diff = abs(source[1] - y)
@@ -74,7 +76,7 @@ for y in given_y:
         remain_dist = dis - height_diff
 
         if remain_dist >= 0:
-            #            print('Source ', source, ' y ', y, ' dis ', dis, ' diff ', height_diff) 
+            #            print('Source ', source, ' y ', y, ' dis ', dis, ' diff ', height_diff)
             lower_x = source[0] - remain_dist
             higher_x = source[0] + remain_dist
 
@@ -82,18 +84,18 @@ for y in given_y:
                 absent_points += [
                     x for x in range(lower_x, higher_x + 1) if x not in beacon_on_y
                 ]
-            else: 
+            else:
                 absent_points += [(lower_x, higher_x)]
 
     # If we are doing part two we need to post process the output per line.
-    if not part1:        
+    if not part1:
         #   print(absent_points)
         absent_points = sorted(absent_points)
-        #print(absent_points)
+        # print(absent_points)
         result = mergeranges(absent_points)
         if result != None:
-            print('part2, x:', result, 'y:', y, 'output:', result *4000000 +y)
+            print("part2, x:", result, "y:", y, "output:", result * 4000000 + y)
             sys.exit()
 
 if part1:
-    print('part1', len(set(absent_points)))
+    print("part1", len(set(absent_points)))
